@@ -18,7 +18,24 @@ fisher install rwietter/fish-abbreviation-tips
 
 ## 🔧 Usage
 
-Just use your shell normally and enjoy tips!
+In your fish configuration file, you can add the following to update keys and values when adding/removing abbreviations or aliases :
+
+```fish
+function abbr_update_keys_and_values
+    __abbr_tips_init
+end
+
+abbr_update_keys_and_values
+```
+
+### Abbreviations example
+
+In your fish configuration file, you can add the following to create abbreviations :
+
+```fish
+abbr grb 'git rebase origin/$(git rev-parse --abbrev-ref HEAD)'
+abbr gph 'git push -u origin $(git rev-parse --abbrev-ref HEAD)'
+```
 
 ### Adding / removing abbreviations or aliases
 
@@ -51,6 +68,14 @@ By default, tips will show up like this :
 
 ```console
 💡 ga => git add
+```
+
+#### Customize it
+
+In your fish configuration file, you can add the following to customize your :
+
+```fish
+set -Ux ABBR_TIPS_PROMPT "❱ \e[38;2;243;134;48;4;1m{{ .abbr }}\e[0m => \e[38;2;189;153;255;4;1m{{ .cmd }}\e[0m"
 ```
 
 But you can customize it using the prompt environment variable. The plugin will replace `{{ .abbr }}` with the abbreviation/alias and `{{ .cmd }}` with the corresponding command.
@@ -89,26 +114,6 @@ You can add such regexes to the `ABBR_TIPS_REGEXES` list, and they will be teste
 In order to not slow down your prompt, the plugin store abbreviations/aliases and their corresponding commands in lists (actually simulating a dictionary, as [fish doesn't support dict yet](https://github.com/fish-shell/fish-shell/issues/390)) to avoid iterating over all abbreviations/aliases each time you type a command. So retrieving an abbreviation or an alias from a command is fast as it doesn't involve any loop.
 
 The plugin will create lists once during installation by calling `__abbr_tips_init` in the background (more precisely in spawned shell, because [fish doesn't put functions in background](https://github.com/fish-shell/fish-shell/issues/238)). Then, lists will get updated when you add or remove abbreviation/alias using `abbr` or `functions` builtin.
-
-## Recommended
-
-In your fish configuration file, you can add the following to make the tips more visible :
-
-```fish
-function abbr_update_keys_and_values
-    __abbr_tips_init
-end
-
-abbr_update_keys_and_values
-```
-
-## Customize your tips
-
-In your fish configuration file, you can add the following to customize your tips :
-
-```fish
-set -Ux ABBR_TIPS_PROMPT "❱ \e[38;2;243;134;48;4;1m{{ .abbr }}\e[0m => \e[38;2;189;153;255;4;1m{{ .cmd }}\e[0m"
-```
 
 ## 💭 Inspiration
 
